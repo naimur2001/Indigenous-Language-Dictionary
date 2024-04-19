@@ -1,9 +1,10 @@
-import React from 'react'
+
+import HomePage from '../Home/HomePage'
 
 const Main = () => {
   return (
     <div>
-<h1 className='text-8xl' >ami main</h1>
+<HomePage></HomePage>
     </div>
   )
 }
