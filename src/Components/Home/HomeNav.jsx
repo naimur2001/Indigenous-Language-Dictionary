@@ -2,7 +2,7 @@
 const HomeNav = () => {
   return (
     <div>
-      <div className="flex justify-around font-bold text-2xl bg-sky-200 p-4">
+      <div className="flex justify-around font-bold text-2xl bg-sky-200 px-8 py-5 ">
         <span>Vocabulary</span>
         <span>BENGALI</span>
         <span>ENGLISH</span>

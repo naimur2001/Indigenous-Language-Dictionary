@@ -24,49 +24,85 @@ const HomeSideBar = () => {
   // };
 
  
- const searchData = [
-  {
-    ben: "পানি  বি. [IPA] বিপরিতার্থক শব্দ - বাংলা [IPA] সমার্থক শব্দ - বাংলা [IPA] ।",
-    eng: "Water n, [IPA] Antonym - [Times New Roman] Synonyms- [Times New Roman]",
-    fre: "l’ eau n pe, f,  Antonym - [Times New Roman] Synonyms- [Times New Roman] ।"
-  },
-  {
-    ben: "ফুল  বি. [IPA] বিপরিতার্থক শব্দ - বাংলা [IPA] সমার্থক শব্দ - বাংলা [IPA] ।",
-    eng: "Flower n, [IPA] Antonym - [Times New Roman] Synonyms- [Times New Roman]",
-    fre: "fleur n f, Antonym - [Times New Roman] Synonyms- [Times New Roman] ।"
-  },
-  {
-    ben: "আকাশ  বি. [IPA] বিপরিতার্থক শব্দ - বাংলা [IPA] সমার্থক শব্দ - বাংলা [IPA] ।",
-    eng: "Sky n, [IPA] Antonym - [Times New Roman] Synonyms- [Times New Roman]",
-    fre: "ciel n m, Antonym - [Times New Roman] Synonyms- [Times New Roman] ।"
-  },
-  {
-    ben: "সূর্য  বি. [IPA] বিপরিতার্থক শব্দ - বাংলা [IPA] সমার্থক শব্দ - বাংলা [IPA] ।",
-    eng: "Sun n, [IPA] Antonym - [Times New Roman] Synonyms- [Times New Roman]",
-    fre: "soleil n m, Antonym - [Times New Roman] Synonyms- [Times New Roman] ।"
-  },
-  // Add more objects as needed...
-];
-  const { setData} = useData()
-  const handleSearch = () => {
-   
+//  const searchData = [
+//   {
+//     ben: "পানি  বি. [IPA] বিপরিতার্থক শব্দ - বাংলা [IPA] সমার্থক শব্দ - বাংলা [IPA] ।",
+//     eng: "Water n, [IPA] Antonym - [Times New Roman] Synonyms- [Times New Roman]",
+//     fre: "l’ eau n pe, f,  Antonym - [Times New Roman] Synonyms- [Times New Roman] ।"
+//   },
+//   {
+//     ben: "ফুল  বি. [IPA] বিপরিতার্থক শব্দ - বাংলা [IPA] সমার্থক শব্দ - বাংলা [IPA] ।",
+//     eng: "Flower n, [IPA] Antonym - [Times New Roman] Synonyms- [Times New Roman]",
+//     fre: "fleur n f, Antonym - [Times New Roman] Synonyms- [Times New Roman] ।"
+//   },
+//   {
+//     ben: "আকাশ  বি. [IPA] বিপরিতার্থক শব্দ - বাংলা [IPA] সমার্থক শব্দ - বাংলা [IPA] ।",
+//     eng: "Sky n, [IPA] Antonym - [Times New Roman] Synonyms- [Times New Roman]",
+//     fre: "ciel n m, Antonym - [Times New Roman] Synonyms- [Times New Roman] ।"
+//   },
+//   {
+//     ben: "সূর্য  বি. [IPA] বিপরিতার্থক শব্দ - বাংলা [IPA] সমার্থক শব্দ - বাংলা [IPA] ।",
+//     eng: "Sun n, [IPA] Antonym - [Times New Roman] Synonyms- [Times New Roman]",
+//     fre: "soleil n m, Antonym - [Times New Roman] Synonyms- [Times New Roman] ।"
+//   },
+//   // Add more objects as needed...
+// ];
+const { setData, menuItems, setMenuItems } = useData();
+
+const handleSearch = async () => {
+  try {
+    const apiUrl = `https://app-ild.onrender.com/api/data/search?bengali_word=${encodeURIComponent(searchTerm)}`;
     
-    // Filter search result based on searchTerm
-    const result = searchData.filter(item =>
-      item.ben.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Fetch data from the API
+    const response = await fetch(apiUrl);
+    const data = await response.json();
 
-    // Update searchResult state
+    // Update state with API response
+    setData(data);
+    
+    // Set fetched data to inputSearchData state
+    setInputSearchData({
+      english: data[0].englishWord,
+      french: data[0].frenchWord
+    });
 
-    setData(result)
-      // Extract first word from English and French data
-  const english = result.length > 0 ? result[0].eng.split(' ')[0] : '';
-  console.log(result[0],"emon")
-  const french = result.length > 0 ? result[0].fre.split(' ')[0] : '';
+    console.log(data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
 
-  // Update inputSearchData state
-  setInputSearchData({ english, french });
-  };
+//slected option
+const handleSelect = (selectedMenu) => {
+  setSelectedOption(selectedMenu);
+ 
+  switch (selectedMenu) {
+    case "chakma":
+      setMenuItems ( ["Ampi (𑄜ម্পꯤ): Hello", "Faidah (𑄜𑄫𑄘𑄜): Thank you", "Hakchang (𑄦𑄏𑄌𑄎): How are you?"]);
+      break;
+    case "marma":
+      // **Note:** Be mindful of sharing sensitive Marma terminology publicly.
+      // These examples are for illustration purposes only.
+      setMenuItems ( ["grijsa (neck)", "krima (stomach)", "dau (eye)"]);
+      break;
+    case "santali":
+      // **Placeholder for Santali words:**
+      // You can replace this with actual Santali words if you have a reliable source.
+      setMenuItems ( ["Amai (আমায়): Mother","Baha (বহা): Outside", " Marang (মারাং): House", ]);
+      break;
+    case "mro":
+      // **Placeholder for Mro words:**
+      // You can replace this with actual Mro words if you have a reliable source.
+      setMenuItems ( [" tăkɑu¹³ (forehead)", "nɔr² (mouth)", "kom¹ (back))"]);
+      break;
+    default:
+      setMenuItems ( []);
+  }
+  // You can also fetch data based on the selected menu
+  // Modify this part according to your API structure and logic
+};
+
+
   return (
     <div>
       <div className="flex flex-col h-[600px] w-80 bg-sky-200 p-4">
@@ -120,7 +156,7 @@ const HomeSideBar = () => {
 <span className="flex items-center ">
 <select
   value={selectedOption}
-  onChange={(e) => setSelectedOption(e.target.value)}
+  onChange={(e) => handleSelect(e.target.value)}
   // onBlur={handleSelect}
   className="my-4 w-60 py-3 outline-none rounded-md border border-gray-400 border-none font-semibold appearance-none focus:outline-none focus:border-blue-500 px-2"
 >
